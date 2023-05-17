@@ -43,6 +43,12 @@ async function run() {
       const result = await cursor.toArray();
       res.send(result);
     });
+    app.get("/toys/:category", async (req, res) => {
+      const category = req.params.category;
+      const cursor = toyCollection.find({ category: category });
+      const result = await cursor.toArray();
+      res.send(result);
+    });
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
