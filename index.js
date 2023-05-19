@@ -79,7 +79,6 @@ async function run() {
         .toArray();
       res.send(toys);
     });
-    // updTe toy
     app.patch("/updateToy/:id", async (req, res) => {
       const id = req.params.id;
       const body = req.body;
@@ -92,7 +91,13 @@ async function run() {
         },
       };
       const result = await toyCollection.updateOne(query, updateDoc);
-      return res.status(200).send(result);
+      res.status(200).send(result);
+    });
+    app.delete("/deleteToy/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await toyCollection.deleteOne(query);
+      res.send(result);
     });
   } finally {
     // Ensures that the client will close when you finish/error
