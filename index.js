@@ -57,6 +57,19 @@ async function run() {
       const result = await toyCollection.findOne(query);
       res.send(result);
     });
+    app.post("/post-toy", async (req, res) => {
+      const body = req.body;
+      console.log(body);
+      const result = await toyCollection.insertOne(body);
+      if (result?.insertedId) {
+        return res.status(200).send(result);
+      } else {
+        return res.status(404).send({
+          message: "can not insert try again leter",
+          status: false,
+        });
+      }
+    });
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
