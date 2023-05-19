@@ -29,7 +29,6 @@ async function run() {
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
     );
-
     app.get("/toys", async (req, res) => {
       const cursor = toyCollection.find();
       const result = await cursor.toArray();
