@@ -50,9 +50,9 @@ async function run() {
       const result = await cursor.toArray();
       res.send(result);
     });
-    // get toy by id
-    app.get("/toys/:id", async (req, res) => {
+    app.get("/toy/:id", async (req, res) => {
       const id = req.params.id;
+      console.log(id);
       const query = { _id: new ObjectId(id) };
       const result = await toyCollection.findOne(query);
       res.send(result);
