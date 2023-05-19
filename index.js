@@ -69,6 +69,22 @@ async function run() {
         .toArray();
       res.send(toys);
     });
+    app.get("/myToys/:email/sortByPrice/:sortOrder", async (req, res) => {
+      const email = req.params.email;
+      const sortOrder = req.params.sortOrder === "desc" ? -1 : 1;
+
+      try {
+        const toys = await toyCollection
+          .find({ email })
+          .sort({ price: sortOrder })
+          .toArray();
+        res.send(toys);
+      } catch (error) {
+        console.error("Error fetching sorted toys:", error);
+        res.status(500).send("An error occurred while fetching sorted toys.");
+      }
+    });
+
     app.patch("/updateToy/:id", async (req, res) => {
       const id = req.params.id;
       const body = req.body;
