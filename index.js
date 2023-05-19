@@ -29,6 +29,19 @@ async function run() {
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
     );
+    const indexKeys = { name: 1 };
+    const indexOptions = { name: "nameIndex" };
+
+    const result = await toyCollection.createIndex(indexKeys, indexOptions);
+    console.log(result);
+    app.get("/searchToy/:text", async (req, res) => {
+      const text = req.params.text;
+      const result = await toyCollection
+        .find({ name: { $regex: text, $options: "i" } })
+        .toArray();
+      res.send(result);
+    });
+
     app.get("/toys", async (req, res) => {
       const cursor = toyCollection.find();
       const result = await cursor.toArray();
