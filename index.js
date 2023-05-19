@@ -79,6 +79,21 @@ async function run() {
         .toArray();
       res.send(toys);
     });
+    // updTe toy
+    app.patch("/updateToy/:id", async (req, res) => {
+      const id = req.params.id;
+      const body = req.body;
+      const query = { _id: new ObjectId(id) };
+      const updateDoc = {
+        $set: {
+          price: body.price,
+          quantity: body.quantity,
+          description: body.description,
+        },
+      };
+      const result = await toyCollection.updateOne(query, updateDoc);
+      return res.status(200).send(result);
+    });
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
