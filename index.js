@@ -100,7 +100,7 @@ async function run() {
       }
     });
 
-    app.patch("/updateToy/:id", async (req, res) => {
+    app.patch("/updateDetails/:id", async (req, res) => {
       const id = req.params.id;
       const body = req.body;
       const query = { _id: new ObjectId(id) };
