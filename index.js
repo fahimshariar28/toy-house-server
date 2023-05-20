@@ -55,8 +55,7 @@ async function run() {
     app.get("/toys/:category", async (req, res) => {
       const category = req.params.category;
       const query = { category: category };
-      const cursor = toyCollection.find(query);
-      const result = await cursor.toArray();
+      const result = await toyCollection.find(query).toArray();
       res.send(result);
     });
     app.get("/toy/:id", async (req, res) => {
