@@ -42,9 +42,17 @@ async function run() {
     });
 
     app.get("/toys", async (req, res) => {
-      const cursor = toyCollection.find();
+      console.log(req.query);
+      const page = parseInt(req.query.page) || 1;
+      const limit = parseInt(req.query.limit) || 20;
+      const skip = (page - 1) * limit;
+      const cursor = toyCollection.find().skip(skip).limit(limit);
       const result = await cursor.toArray();
       res.send(result);
+    });
+    app.get("/totalToys", async (req, res) => {
+      const result = await toyCollection.estimatedDocumentCount();
+      res.send({ totalToys: result });
     });
     app.get("/toysCategory", async (req, res) => {
       const result = await toyCollection.find().toArray();
