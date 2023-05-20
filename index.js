@@ -33,7 +33,6 @@ async function run() {
     const indexOptions = { name: "nameIndex" };
 
     const result = await toyCollection.createIndex(indexKeys, indexOptions);
-    console.log(result);
     app.get("/searchToy/:text", async (req, res) => {
       const text = req.params.text;
       const result = await toyCollection
@@ -46,6 +45,12 @@ async function run() {
       const cursor = toyCollection.find();
       const result = await cursor.toArray();
       res.send(result);
+    });
+    app.get("/toysCategory", async (req, res) => {
+      const result = await toyCollection.find().toArray();
+      const category = result.map((item) => item.category);
+      const uniqueCategory = [...new Set(category)];
+      res.send(uniqueCategory);
     });
     app.get("/toys/:category", async (req, res) => {
       const category = req.params.category;
@@ -62,7 +67,6 @@ async function run() {
     });
     app.post("/post-toy", async (req, res) => {
       const body = req.body;
-      console.log(body);
       const result = await toyCollection.insertOne(body);
       if (result?.insertedId) {
         return res.status(200).send(result);
@@ -74,7 +78,6 @@ async function run() {
       }
     });
     app.get("/myToys/:email", async (req, res) => {
-      console.log(req.params.email);
       const toys = await toyCollection
         .find({
           email: req.params.email,
