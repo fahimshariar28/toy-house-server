@@ -97,10 +97,16 @@ async function run() {
       const sortOrder = req.params.sortOrder === "desc" ? -1 : 1;
 
       try {
-        const toys = await toyCollection
-          .find({ email })
-          .sort({ price: sortOrder })
-          .toArray();
+        const toys = await toyCollection.find({ email }).toArray();
+
+        toys.forEach((toy) => {
+          toy.price = parseFloat(toy.price);
+        });
+
+        toys.sort((a, b) => {
+          return sortOrder * (a.price - b.price);
+        });
+
         res.send(toys);
       } catch (error) {
         console.error("Error fetching sorted toys:", error);
