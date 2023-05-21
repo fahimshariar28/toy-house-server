@@ -35,7 +35,9 @@ async function run() {
     // const result = await toyCollection.createIndex(indexKeys, indexOptions);
     app.get("/searchToy/:text", async (req, res) => {
       const text = req.params.text;
-      const result = await toyCollection.find({ name: text }).toArray();
+      const result = await toyCollection
+        .find({ name: { $regex: text, $options: "i" } })
+        .toArray();
       res.send(result);
     });
 
